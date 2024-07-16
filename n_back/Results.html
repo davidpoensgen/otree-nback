@@ -1,0 +1,24 @@
+{{ block title }}
+    n-back results
+{{ endblock }}
+
+{{ block content }}
+    Thank you for completing this round. Your response was correct for {{correct_count}} of {{total_count}} items. Here is a detailed overview:
+    <table>
+        <tr>
+            <td>item:</td>
+            <td><tt>{{player.item_sequence}}</tt></td>
+        </tr>
+        <tr>
+            <td>reponse:&nbsp;</td>
+            <td><tt>{{player.responses}}</tt></td>
+        </tr>
+        <tr>
+            <td>correct:</td>
+            <td><tt>{{player.correct}}</tt></td>
+        </tr>
+    </table>
+    {{ next_button }}
+{{ endblock }}
+
+

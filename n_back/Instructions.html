@@ -1,0 +1,27 @@
+{{ block title }}
+    n-back instructions
+{{ endblock }}
+
+{{ block content }}
+
+<p>(Please consider these instructions a placeholder; replace, expand and adapt to your needs.)</p>
+<p>
+    On the following page you will see a sequence comprised of the numbers 1, 2, 3, and 4.
+    Each number is shown for {{C.trialDuration}} milliseconds; then nothing is shown for {{C.intertrialDuration}} milliseconds, before
+    the next number appears and so on. The sequence has a length of {{length}} numbers in total.
+</p>
+<p>
+    Your task is to press the space bar whenever the current number
+    is exactly the same as the number that was shown {{C.N}} numbers before.
+       You have time to react until the number disappears after {{C.trialDuration}} milliseconds.
+</p>
+<p>
+    Both pressing the space bar when the number does not match, or failing to press it when it does count as an error.
+    &#10003; is briefly shown to indicate an error; whenever you correctly press space, &#10007; appears instead.
+</p>
+
+
+    {{ next_button }}
+{{ endblock }}
+
+

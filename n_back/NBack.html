@@ -1,0 +1,141 @@
+{{ block title }}
+n-back task
+{{ endblock }}
+{{ block content }}
+<style>
+    .nback-container{
+        width: 600px;
+        height: 600px;
+        position: relative;
+        border: lightgrey solid 1px;
+        margin: auto;
+    }
+
+    .item {
+        font-size: 128px;
+        font-weight: bold;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.3s ease;
+        opacity: 0;
+    }
+
+    .type_0{
+        color: red;
+    }
+    .type_1{
+        color: blue;
+    }
+    .type_2{
+        color: gold;
+    }
+    .type_3{
+        color: green;
+    }
+
+    .feedback {
+        font-size: 96px;
+        position: absolute;
+        font-weight: bold;
+        left: 50%;
+        top: 70%;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.2s ease;
+        opacity: 0;
+    }
+    #correct{
+        color: darkgreen;
+    }
+    #incorrect{
+        color: darkred;
+    }
+
+</style>
+
+<div class="nback-container">
+
+    {{ for item in player.item_sequence}}
+        <div id="id_{{forloop.counter0}}" class="item type_{{item}}"> {{item}} </div>
+    {{ endfor }}
+
+    <div id="correct" class="feedback">&#10003;</div>
+    <div id="incorrect" class="feedback">&#10007;</div>
+
+    <input type="hidden" name="responses" id="responses_input">
+    <input type="hidden" name="correct" id="correct_input">
+</div>
+
+<script>
+    const target_responses = js_vars.target_responses;
+    const num_trials = target_responses.length;
+    const trialDuration = {{ C.trialDuration }};
+    const intertrialDuration = {{ C.intertrialDuration }};
+    let round = -1;
+    let responses = Array(num_trials).fill(0);
+    let correct = Array(num_trials).fill(1);
+
+    $(document).ready(function(){
+        window.addEventListener("keydown",function(e){
+            if (e.keyCode == "32"){
+                e.preventDefault()
+            }
+        }, false);
+
+        setInterval(function(){
+            play_round();
+        }, trialDuration + intertrialDuration)
+    });
+
+    function play_round(){
+        round += 1;
+
+        // finish after the last item by submitting the form
+        if (round == num_trials) {
+            document.getElementById("responses_input").setAttribute("value", responses.join(""));
+            document.getElementById("correct_input").setAttribute("value", correct.join(""));
+            document.getElementById("form").submit();
+        }
+
+        document.getElementById("id_"+round).style.opacity = 1;
+        if (round >= Number({{C.N}})) {
+            window.addEventListener("keydown", keypressed, false);
+        }
+
+        setTimeout(function(){
+            window.removeEventListener("keydown", keypressed, false);
+            document.getElementById("id_"+round).style.opacity = 0;
+            if (responses[round] == 0 & target_responses[round]==1){
+                correct[round] = 0;
+                flicker("incorrect");
+            }
+        }, trialDuration);
+    }
+
+    function keypressed(e){
+        if (e.keyCode == "32"){
+            window.removeEventListener("keydown", keypressed, false);
+            responses[round] = 1;
+            if (target_responses[round] == 1){
+                flicker("correct");
+            }
+            else {
+                correct[round] = 0;
+                flicker("incorrect")
+            }
+        }
+    }
+
+    function flicker(item){
+        document.getElementById(item).style.opacity = 1;
+        setTimeout(function(){
+            document.getElementById(item).style.opacity = 0;
+        }, 300)
+    }
+
+
+</script>
+
+
+{{ endblock }}
