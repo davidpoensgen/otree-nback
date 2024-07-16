@@ -30,8 +30,8 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     # this is the item sequence; it is fixed here for demo purposes.
     # Usually, it should be set in creating_session or similar, and each round should use a different sequence.
-    # While the example uses 0-3 only, it would be straightforward to extend it to e.g. 5 items.
-    item_sequence = models.StringField(initial="121232132203013122201202313212113231213220302320")
+    # While the example uses 1-4 only, it would be straightforward to extend it to e.g. 5 items.
+    item_sequence = models.StringField(initial="121232132243413122241242313212113231213224342324")
 
     responses = models.StringField()
     correct = models.StringField()
